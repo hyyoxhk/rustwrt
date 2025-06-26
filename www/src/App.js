@@ -8,6 +8,7 @@ import Wireless from './pages/Wireless';
 import Firewall from './pages/Firewall';
 import DHCP from './pages/DHCP';
 import System from './pages/System';
+import './i18n';
 import './App.css';
 
 const { Content } = Layout;

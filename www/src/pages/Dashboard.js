@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, Statistic, Progress, Table, Tag } from 'antd';
+import { useTranslation } from 'react-i18next';
 import { 
   WifiOutlined, 
   GlobalOutlined, 
@@ -10,6 +11,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import api from '../utils/api';
 
 function Dashboard() {
+  const { t } = useTranslation();
   const [systemInfo, setSystemInfo] = useState(null);
   const [networkStatus, setNetworkStatus] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -47,18 +49,18 @@ function Dashboard() {
 
   const interfaceColumns = [
     {
-      title: '接口名称',
+      title: t('common.name'),
       dataIndex: 'name',
       key: 'name',
     },
     {
-      title: '类型',
+      title: t('common.type'),
       dataIndex: 'interface_type',
       key: 'interface_type',
       render: (type) => {
         const typeMap = {
-          'Ethernet': { text: '以太网', color: 'blue' },
-          'Wireless': { text: '无线', color: 'green' },
+          'Ethernet': { text: t('network.lan'), color: 'blue' },
+          'Wireless': { text: t('common.wireless'), color: 'green' },
           'Loopback': { text: '回环', color: 'orange' },
           'Bridge': { text: '桥接', color: 'purple' },
         };
@@ -67,17 +69,17 @@ function Dashboard() {
       },
     },
     {
-      title: '状态',
+      title: t('common.status'),
       dataIndex: 'status',
       key: 'status',
       render: (status) => (
         <Tag color={status === 'Up' ? 'green' : 'red'}>
-          {status === 'Up' ? '在线' : '离线'}
+          {status === 'Up' ? t('dhcp.online') : t('dhcp.offline')}
         </Tag>
       ),
     },
     {
-      title: 'IP地址',
+      title: t('common.ip'),
       dataIndex: 'ip_addresses',
       key: 'ip_addresses',
       render: (addresses) => addresses.join(', ') || '无',
@@ -85,19 +87,19 @@ function Dashboard() {
   ];
 
   if (loading) {
-    return <div>加载中...</div>;
+    return <div>{t('common.loading')}</div>;
   }
 
   return (
     <div>
-      <h1>系统仪表板</h1>
+      <h1>{t('dashboard.title')}</h1>
       
       {/* 系统概览卡片 */}
       <Row gutter={16} style={{ marginBottom: 24 }}>
         <Col span={6}>
           <Card>
             <Statistic
-              title="CPU使用率"
+              title={t('dashboard.cpuUsage')}
               value={systemInfo?.cpu?.usage_percent || 0}
               suffix="%"
               prefix={<GlobalOutlined />}
@@ -112,7 +114,7 @@ function Dashboard() {
         <Col span={6}>
           <Card>
             <Statistic
-              title="内存使用率"
+              title={t('dashboard.memoryUsage')}
               value={systemInfo?.memory ? 
                 Math.round((systemInfo.memory.used / systemInfo.memory.total) * 100) : 0}
               suffix="%"
@@ -129,7 +131,7 @@ function Dashboard() {
         <Col span={6}>
           <Card>
             <Statistic
-              title="磁盘使用率"
+              title={t('dashboard.diskUsage')}
               value={systemInfo?.disk?.usage_percent || 0}
               suffix="%"
               prefix={<SafetyOutlined />}
@@ -144,7 +146,7 @@ function Dashboard() {
         <Col span={6}>
           <Card>
             <Statistic
-              title="网络接口"
+              title={t('dashboard.networkTraffic')}
               value={networkStatus?.interfaces?.length || 0}
               prefix={<WifiOutlined />}
             />
@@ -155,17 +157,17 @@ function Dashboard() {
       {/* 系统信息 */}
       <Row gutter={16} style={{ marginBottom: 24 }}>
         <Col span={12}>
-          <Card title="系统信息" size="small">
-            <p><strong>主机名:</strong> {systemInfo?.hostname}</p>
+          <Card title={t('dashboard.systemStatus')} size="small">
+            <p><strong>{t('system.hostname')}:</strong> {systemInfo?.hostname}</p>
             <p><strong>OpenWrt版本:</strong> {systemInfo?.openwrt_version}</p>
-            <p><strong>运行时间:</strong> {Math.floor((systemInfo?.uptime || 0) / 3600)} 小时</p>
+            <p><strong>{t('dashboard.uptime')}:</strong> {Math.floor((systemInfo?.uptime || 0) / 3600)} 小时</p>
             <p><strong>负载平均值:</strong> {systemInfo?.load_average?.join(', ')}</p>
           </Card>
         </Col>
         <Col span={12}>
-          <Card title="网络状态" size="small">
-            <p><strong>默认网关:</strong> {networkStatus?.default_gateway || '无'}</p>
-            <p><strong>DNS服务器:</strong> {networkStatus?.dns_servers?.join(', ') || '无'}</p>
+          <Card title={t('dashboard.networkStatus')} size="small">
+            <p><strong>{t('network.gateway')}:</strong> {networkStatus?.default_gateway || '无'}</p>
+            <p><strong>{t('network.dns')}:</strong> {networkStatus?.dns_servers?.join(', ') || '无'}</p>
             <p><strong>互联网连接:</strong> 
               <Tag color={networkStatus?.internet_connectivity ? 'green' : 'red'}>
                 {networkStatus?.internet_connectivity ? '正常' : '断开'}
@@ -176,7 +178,7 @@ function Dashboard() {
       </Row>
 
       {/* 网络接口列表 */}
-      <Card title="网络接口">
+      <Card title={t('dashboard.networkTraffic')}>
         <Table
           columns={interfaceColumns}
           dataSource={networkStatus?.interfaces || []}

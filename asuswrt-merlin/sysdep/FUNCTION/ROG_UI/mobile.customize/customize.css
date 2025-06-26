@@ -1,0 +1,111 @@
+﻿@font-face{
+	font-family: Xolonium;
+	src: url(/fonts/xolonium.regular.woff) format("woff"),
+		 url(/fonts/xolonium.regular.otf) format("opentype");
+}
+html::-webkit-scrollbar{
+    display: block;
+    width: 4px;
+    height: 4px;
+    padding: 2px;
+}
+html::-webkit-scrollbar-thumb{
+    background-color: #FF3535 !important;   
+    border-radius: 50px;
+}
+html::-webkit-scrollbar-track{
+    background-color: #192229 !important;
+}
+#welcomeTitle{
+	font-family: Xolonium;
+}
+#welcome_button{
+	font-family: Xolonium;
+}
+.titleMain, .titleSub, .footer_desktop, .footer_mobile, .mobile_applyBtn, .mobile_abortBtn{
+	font-family: Xolonium;
+}
+body{
+	background:url('../images/New_ui/login_bg.png') no-repeat;
+	background-attachment: fixed;
+	background-size: cover;
+}
+a{
+	color: #CF0A2C !important;
+}
+.navigation li dd:hover{
+	text-decoration:underline;
+	background-color: rgba(207,10,44,1);
+}
+/*
+.nonROG{
+	display: none;
+}
+.ROG{
+	display: block;	
+}
+.productIconContainer > div{
+	background: #AE0000;
+}
+#ROGLOGO{
+	background-image: url(./logo.svg);
+	background-size: cover;
+	width: 400px;
+	height: 400px;
+}
+*/
+.footer_mobile{
+	border-top: 2px solid #CF0A2C;
+}
+.desktop_applyBtn{
+	border: 2px solid #CF0A2C;
+	background: #CF0A2C;
+}
+.desktop_abortBtn{
+	color: #CF0A2C;
+}
+.ui-input-text input, .ui-input-search input{
+	border-color: #CF0A2C;
+}
+#welcome_button{
+	background-color: #CF0A2C;
+	border:1px solid #CF0A2C;
+}
+#aimesh_welcome_button{
+	background-color: #CF0A2C;
+	border:1px solid #CF0A2C;
+}
+.advSetting{
+	color: #CF0A2C;
+}
+.descSteps{
+	color: #CF0A2C;
+}
+.mobileApply{
+	background: #CF0A2C;
+}
+.ap_ssid_hover{
+	color: #CF0A2C !important;
+}
+.selectorContainerDiv:hover, .selectBar > label:hover, .labelInput:hover{
+	color: #CF0A2C;
+}
+.loadingBarContainer{
+	border: 2px solid #CF0A2C!important;
+}
+.loadingBar{
+	background-color: #CF0A2C!important;
+}
+@media screen and (min-aspect-ratio: 11/13){
+	.desktop_left_field{
+		color: #CF0A2C;
+	}
+}
+
+.icon_logo{
+	width: 530px;
+	height: 90px;
+	margin-left: -40px;
+	background-image: url("/images/New_ui/logo_ROG.png");
+	background-repeat: no-repeat;
+}

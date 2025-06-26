@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Table, Tag, Button, Space, Modal, Form, Input, Select, message } from 'antd';
+import { useTranslation } from 'react-i18next';
 import { ReloadOutlined, SettingOutlined } from '@ant-design/icons';
 import api from '../utils/api';
 
 const { Option } = Select;
 
 function Network() {
+  const { t } = useTranslation();
   const [interfaces, setInterfaces] = useState([]);
   const [networkStatus, setNetworkStatus] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -47,18 +49,18 @@ function Network() {
 
   const columns = [
     {
-      title: '接口名称',
+      title: t('common.name'),
       dataIndex: 'name',
       key: 'name',
     },
     {
-      title: '类型',
+      title: t('common.type'),
       dataIndex: 'interface_type',
       key: 'interface_type',
       render: (type) => {
         const typeMap = {
-          'Ethernet': { text: '以太网', color: 'blue' },
-          'Wireless': { text: '无线', color: 'green' },
+          'Ethernet': { text: t('network.lan'), color: 'blue' },
+          'Wireless': { text: t('common.wireless'), color: 'green' },
           'Loopback': { text: '回环', color: 'orange' },
           'Bridge': { text: '桥接', color: 'purple' },
           'VLAN': { text: 'VLAN', color: 'cyan' },
@@ -68,23 +70,23 @@ function Network() {
       },
     },
     {
-      title: '状态',
+      title: t('common.status'),
       dataIndex: 'status',
       key: 'status',
       render: (status) => (
         <Tag color={status === 'Up' ? 'green' : 'red'}>
-          {status === 'Up' ? '在线' : '离线'}
+          {status === 'Up' ? t('dhcp.online') : t('dhcp.offline')}
         </Tag>
       ),
     },
     {
-      title: 'IP地址',
+      title: t('common.ip'),
       dataIndex: 'ip_addresses',
       key: 'ip_addresses',
       render: (addresses) => addresses.join(', ') || '无',
     },
     {
-      title: 'MAC地址',
+      title: t('common.mac'),
       dataIndex: 'mac_address',
       key: 'mac_address',
       render: (mac) => mac || '无',
@@ -96,7 +98,7 @@ function Network() {
       render: (speed) => speed ? `${speed} Mbps` : '未知',
     },
     {
-      title: '操作',
+      title: t('common.action'),
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
@@ -105,7 +107,7 @@ function Network() {
             icon={<SettingOutlined />}
             onClick={() => handleConfigure(record)}
           >
-            配置
+            {t('common.settings')}
           </Button>
         </Space>
       ),
@@ -125,35 +127,35 @@ function Network() {
     try {
       const values = await form.validateFields();
       // 这里应该调用API更新接口配置
-      message.success('配置更新成功');
+      message.success(t('notifications.settingsSaved'));
       setModalVisible(false);
       fetchNetworkData();
     } catch (error) {
-      message.error('配置更新失败');
+      message.error(t('notifications.settingsFailed'));
     }
   };
 
   return (
     <div>
       <div style={{ marginBottom: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1>网络管理</h1>
+        <h1>{t('network.title')}</h1>
         <Button 
           type="primary" 
           icon={<ReloadOutlined />} 
           onClick={fetchNetworkData}
           loading={loading}
         >
-          刷新
+          {t('common.refresh')}
         </Button>
       </div>
 
-      <Card title="网络状态" style={{ marginBottom: 16 }}>
+      <Card title={t('dashboard.networkStatus')} style={{ marginBottom: 16 }}>
         <div style={{ display: 'flex', gap: 32 }}>
           <div>
-            <strong>默认网关:</strong> {networkStatus?.default_gateway || '无'}
+            <strong>{t('network.gateway')}:</strong> {networkStatus?.default_gateway || '无'}
           </div>
           <div>
-            <strong>DNS服务器:</strong> {networkStatus?.dns_servers?.join(', ') || '无'}
+            <strong>{t('network.dns')}:</strong> {networkStatus?.dns_servers?.join(', ') || '无'}
           </div>
           <div>
             <strong>互联网连接:</strong> 
@@ -164,7 +166,7 @@ function Network() {
         </div>
       </Card>
 
-      <Card title="网络接口">
+      <Card title={t('dashboard.networkTraffic')}>
         <Table
           columns={columns}
           dataSource={interfaces}
@@ -175,7 +177,7 @@ function Network() {
       </Card>
 
       <Modal
-        title="配置网络接口"
+        title={t('network.title')}
         open={modalVisible}
         onOk={handleModalOk}
         onCancel={() => setModalVisible(false)}
@@ -184,29 +186,29 @@ function Network() {
         <Form form={form} layout="vertical">
           <Form.Item
             name="name"
-            label="接口名称"
-            rules={[{ required: true, message: '请输入接口名称' }]}
+            label={t('common.name')}
+            rules={[{ required: true, message: t('validation.required') }]}
           >
             <Input disabled />
           </Form.Item>
           <Form.Item
             name="type"
-            label="接口类型"
-            rules={[{ required: true, message: '请选择接口类型' }]}
+            label={t('common.type')}
+            rules={[{ required: true, message: t('validation.required') }]}
           >
             <Select disabled>
-              <Option value="Ethernet">以太网</Option>
-              <Option value="Wireless">无线</Option>
+              <Option value="Ethernet">{t('network.lan')}</Option>
+              <Option value="Wireless">{t('common.wireless')}</Option>
               <Option value="Bridge">桥接</Option>
               <Option value="VLAN">VLAN</Option>
             </Select>
           </Form.Item>
           <Form.Item
             name="ip_addresses"
-            label="IP地址"
-            rules={[{ required: true, message: '请输入IP地址' }]}
+            label={t('common.ip')}
+            rules={[{ required: true, message: t('validation.required') }]}
           >
-            <Input placeholder="例如: 192.168.1.1/24" />
+            <Input placeholder={t('network.ipAddress')} />
           </Form.Item>
         </Form>
       </Modal>
