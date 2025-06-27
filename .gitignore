@@ -10,11 +10,12 @@ yarn-debug.log*
 yarn-error.log*
 
 # React
-frontend/build/
-frontend/.env.local
-frontend/.env.development.local
-frontend/.env.test.local
-frontend/.env.production.local
+reactwrt/build/
+reactwrt/.env.local
+reactwrt/.env.development.local
+reactwrt/.env.test.local
+reactwrt/.env.production.local
+reactwrt/.next/
 
 # IDE
 .vscode/
@@ -39,4 +40,4 @@ Thumbs.db
 
 # Build artifacts
 dist/
-build/ 
+build/
